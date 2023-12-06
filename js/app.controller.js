@@ -1,5 +1,6 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { utilService } from './services/utils.service.js'
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -10,15 +11,19 @@ window.onMyLocation = onMyLocation
 window.onSearch = onSearch
 
 function onInit() {
-  mapService
-    .initMap()
+  mapService.getUserLocation()
+    .then((userLocation) => {
+      return mapService.initMap(userLocation.lat, userLocation.lng)
+    })
     .then(() => {
       console.log('Map is ready')
     })
-    .catch(() => console.log('Error: cannot init map'))
+    .catch(() => {
+      console.log('Error: Cannot initialize map')
+    })
 }
 
-// This function provides a Promise API to the callback-based-api of getCurrentPosition
+
 function getPosition() {
   console.log('Getting Pos')
   return new Promise((resolve, reject) => {
@@ -27,13 +32,11 @@ function getPosition() {
 }
 
 function onAddMarker() {
-  console.log('Adding a marker')
   mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
 }
 
 function onGetLocs() {
   locService.getLocs().then((locs) => {
-    console.log('Locations:', locs)
     document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
   })
 }
@@ -42,9 +45,7 @@ function onGetUserPos() {
   getPosition()
     .then((pos) => {
       console.log('User position is:', pos.coords)
-      document.querySelector(
-        '.user-pos'
-      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+      document.querySelector('.user-pos').innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
     })
     .catch((err) => {
       console.log('err!!!', err)
@@ -53,30 +54,12 @@ function onGetUserPos() {
 
 function onPanTo(lat, lng) {
   mapService.panTo(lat, lng)
-  // console.log('Panning the Map')
-  // mapService.panTo(35.6895, 139.6917)
 }
 
-// TODO Nir: Render the location on the map - connect between the const locs to the render function
-
-function renderPosition() {
-  console.log('rendering first position')
-  locService
-    .getLocs()
-    .then((locs) => {
-      return { lat: locs[0].lat, lng: locs[0].lng }
-    })
-    .then((position) => mapService.panTo(position.lat, position.lng))
-    .catch((err) => console.log('Error panning to First Position', err))
-}
-
-// TODO Nir: Create a “my-place” button that pan the map to the user’s place.
 
 function onMyLocation() {
   getPosition()
     .then((pos) => {
-      // const mapCoords = pos.coords.
-
       mapService.panTo(pos.coords.latitude, pos.coords.longitude)
       mapService.addMarker({
         lat: pos.coords.latitude,
@@ -86,43 +69,32 @@ function onMyLocation() {
     .catch((err) => console.log('Error panning to user position', err))
 }
 
-// TODO Hodaya: Add an Actions column with buttons: Go and Delete
 
-function onNavigateTo() {}
+function onRemoveLocation() {
+  //     removeLocation.then().catch()
 
-function onRemoveLocation() {}
-
-function addLocationObj(name, lat, lng) {
-  locService
-    .addLocationToStorage({
-      name,
-      lat,
-      lng,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    })
-    .then(() => renderLocationTable())
 }
 
-// function onRemove() {
-//     removeLocation.then().catch()
-// }
+
 
 function onSearch(ev) {
   if (ev) ev.preventDefault()
   const searchValue = document.querySelector('input[name=search]').value
 
   mapService.connectGeocodingApi(searchValue).then((res) => {
-    let lat = res.location.lat
-    let lng = res.location.lng
+
+    const { lat, lng } = res.results[0].geometry.location
     mapService.panTo({ lat, lng })
-    addLocationObj(searchValue, lat, lng)
+    mapService.addLocationObj(searchValue, lat, lng)
+      .then(() => renderLocationTable())
+
+    utilService.updateURLQueryParam('location', searchValue)
   })
 }
 
+
 function renderLocationTable() {
-  locService
-    .getLocationsFromStorage()
+  locService.getLocationsFromStorage()
     .then((locations) => {
       if (!locations.length) {
         console.log('No locations found')
@@ -140,4 +112,18 @@ function renderLocationTable() {
       elLocationContainer.innerHTML = strHtml.join('')
     })
     .catch((err) => console.error('Error rendering location table:', err))
+}
+
+
+
+// not in use functions: 
+function renderPosition() {
+  console.log('rendering first position')
+  locService
+    .getLocs()
+    .then((locs) => {
+      return { lat: locs[0].lat, lng: locs[0].lng }
+    })
+    .then((position) => mapService.panTo(position.lat, position.lng))
+    .catch((err) => console.log('Error panning to First Position', err))
 }

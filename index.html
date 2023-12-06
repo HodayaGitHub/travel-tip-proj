@@ -10,41 +10,43 @@
 </head>
 
 <body class="main-layout">
-    <h1>TravelTip Starter</h1>
+
+    <span class="page-title">
+        <h1>
+            TravelTip Starter
+        </h1>
+
+    </span>
+   
+
 
     <main class="main-layout">
 
-        <div class="locations-container">
-          
-        </div>
+            <div class="search-and-map">
+                <div class="action-items">
+                    <h2>You are at: <span class="user-pos"></span></h4>
+            
+                    <div>
+                        <form onsubmit="onSearch(event)">
+                            <input type="search" name="search" placeholder="Search Location" value="">
+                            <button>🔍</button>
+                        </form>
+                    </div>
+                    <div>
+                        <button onclick="onMyLocation()" class="btn-my-location">My Location</button>
+                    </div>
 
+                    <h2>Locations:</h2>
 
-        <div class="search-and-map">
+                    <div class="locations-container">
 
-            <div>
-                <form onsubmit="onSearch(event)">
-                    <input type="search" name="search" placeholder="Search Location" value="">
-                    <button>🔍</button>
-                </form>
+                    </div>
+
+                </div>
+                <div class="map" id="map"></div>
+
             </div>
-
-            <div id="map" style="width: 100%; height: 400px;"></div>
-        </div>
-
     </main>
-
-    <div>
-        <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
-        <button onclick="onGetUserPos()" class="btn-user-pos">Get User Position</button>
-        <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
-        <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
-        <button onclick="onMyLocation()" class="btn-my-location">My Location</button>
-    </div>
-    <p>You are at: <span class="user-pos"></span></p>
-    <p>Locations:
-    <pre class="locs"></pre>
-    </p>
-
 
 
     <script src="js/lib/axios.js"></script>
