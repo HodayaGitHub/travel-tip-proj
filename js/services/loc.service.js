@@ -1,34 +1,33 @@
 export const locService = {
-    getLocs
+  getLocs,
 }
 
-
 const locs = [
-    {
-        id: 1,
-        name: 'Greatplace',
-        lat: 32.047104,
-        lng: 34.832384,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-    },
-    // { 
-    //     id: 2,
-    //     name: 'Neveragain',
-    //     lat: 32.047201,
-    //     lng: 34.832581, 
-    //     createdAt: Date.now(),
-    //     updatedAt: Date.now(),
-    //      }
+  {
+    id: 1,
+    name: 'Greatplace',
+    // lat: 32.047104,
+    // lng: 34.832384,
+    lat: 43.653225,
+    lng: -79.383186,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  },
+  // {
+  //     id: 2,
+  //     name: 'Neveragain',
+  //     lat: 32.047201,
+  //     lng: 34.832581,
+  //     createdAt: Date.now(),
+  //     updatedAt: Date.now(),
+  //      }
 ]
 
 function getLocs() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(locs)
-            // TODO Hodaya: save to storage
-        }, 2000)
-    })
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(locs)
+      // TODO Hodaya: save to storage
+    }, 2000)
+  })
 }
-
-
