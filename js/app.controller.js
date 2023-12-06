@@ -7,6 +7,7 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 
+
 function onInit() {
     mapService.initMap()
         .then(() => {
@@ -47,7 +48,14 @@ function onGetUserPos() {
             console.log('err!!!', err)
         })
 }
+
 function onPanTo() {
     console.log('Panning the Map')
     mapService.panTo(35.6895, 139.6917)
 }
+
+// TODO Nir: Render the location on the map - connect between the const locs to the render function
+// TODO Nir: Create a “my-place” button that pan the map to the user’s place.
+
+// TODO Hodaya: Add an Actions column with buttons: Go and Delete 
+

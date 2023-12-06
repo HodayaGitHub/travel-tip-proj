@@ -1,12 +1,15 @@
+import {storageService} from './async-storage.service.js'
+
+
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo, 
 }
 
 
 // Var that is used throughout this Module (not global)
-var gMap
+let gMap
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap')
@@ -23,7 +26,7 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 }
 
 function addMarker(loc) {
-    var marker = new google.maps.Marker({
+    let marker = new google.maps.Marker({
         position: loc,
         map: gMap,
         title: 'Hello World!'
@@ -36,12 +39,13 @@ function panTo(lat, lng) {
     gMap.panTo(laLatLng)
 }
 
-
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
+    // const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
     var elGoogleApi = document.createElement('script')
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
+    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=`
+
+    // elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
     elGoogleApi.async = true
     document.body.append(elGoogleApi)
 
