@@ -4,6 +4,7 @@ export const mapService = {
   initMap,
   addMarker,
   panTo,
+  connectGeocodingApi,
 }
 
 // Var that is used throughout this Module (not global)
@@ -59,11 +60,11 @@ function _connectGoogleApi() {
 }
 
 
-
-function _connectGeocodingApi(location_name) {
+function connectGeocodingApi(location_name) {
   if (window.google) return Promise.resolve()
 
-  const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=${API_KEY}`;
+  const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=${API_KEY}`
+  // const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=`
 
   return axios.get(geocodingApiUrl)
       .then(response => {

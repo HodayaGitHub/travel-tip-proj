@@ -114,7 +114,12 @@ function add(name, lat, lng ) {
 
 function onSearch(ev){
   if (ev) ev.preventDefault()
-  const elInputSearch = document.querySelector('input[name=search]')
+  const searchValue = document.querySelector('input[name=search]').value
 
+  mapService.connectGeocodingApi(searchValue)
+  .then(res => {
+    console.log(res);
+    // Further processing or UI updates can be done here based on the geocoding results.
+  })
   // call the api with then 
 }

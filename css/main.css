@@ -1,4 +1,6 @@
 
+
+
 .main-layout {
     display: grid;
     grid-template-columns: 20px 1fr 20px;
@@ -20,7 +22,12 @@
 
 
 
-.main-container{
+/* .main-container{
     display: flex;
     flex-direction: row;
+} */
+
+.search-and-map{
+  display: flex;
+  flex-direction: column;
 }
