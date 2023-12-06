@@ -14,12 +14,15 @@ const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
   console.log('InitMap')
+
   return _connectGoogleApi().then(() => {
     console.log('google available')
     gMap = new google.maps.Map(document.querySelector('#map'), {
       center: { lat, lng },
       zoom: 15,
     })
+    addMarker({ lat, lng })
+    
     // console.log('Map!', gMap)
     gMap.addListener('click', function (ev) {
       const clickedLocation = ev.latLng.toJSON()
@@ -68,15 +71,15 @@ function connectGeocodingApi(location_name) {
   // const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=`
 
   return axios.get(geocodingApiUrl)
-      .then(response => {
-        console.log('res data', response.data)
-        // console.log('resGeo', response.data.results[0].geometry.location)
-        let locationCoords = response.data.results[0].geometry.location
-          return locationCoords
-      })
-      .catch(error => {
-          console.error('Error connecting to the Geocoding API:', error)
-          throw error
-      })
+    .then(response => {
+      console.log('res data', response.data)
+      // console.log('resGeo', response.data.results[0].geometry.location)
+      let locationCoords = response.data.results[0].geometry
+      return locationCoords
+    })
+    .catch(error => {
+      console.error('Error connecting to the Geocoding API:', error)
+      throw error
+    })
 }
 

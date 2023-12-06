@@ -2,6 +2,8 @@ import {storageService} from './async-storage.service.js'
 
 export const locService = {
   getLocs,
+  addLocationToStorage,
+  removeLocationFromStorage,
 }
 
 const LOCATION_TYPE = 'locations'
@@ -31,11 +33,11 @@ function getLocs() {
 
 // call the getLocs on renderLocs 
 
-function removeLocation(locId) {
+function removeLocationFromStorage(locId) {
     // it returns a promise that it will be deleted
     return storageService.remove(LOCATION_TYPE,locId)
 }
 
-function addLocation(locationObj) {
+function addLocationToStorage(locationObj) {
     return storageService.post(LOCATION_TYPE, locationObj)
 }

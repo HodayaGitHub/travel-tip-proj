@@ -95,8 +95,8 @@ function onRemoveLocation() {
 
 }
 
-function add(name, lat, lng) {
-  addLocation({
+function addLocationObj(name, lat, lng) {
+  locService.addLocationToStorage({
     name,
     lat,
     lng,
@@ -116,11 +116,11 @@ function onSearch(ev) {
   if (ev) ev.preventDefault()
   const searchValue = document.querySelector('input[name=search]').value
 
-  let check =  mapService.connectGeocodingApi(searchValue)
+  mapService.connectGeocodingApi(searchValue)
     .then(res => {
-      console.log(res)
-      mapService.panTo({lat: res.lat, lng: res.lng})
-      // return res
-      // Further processing or UI updates can be done here based on the geocoding results.
+      let lat = res.location.lat
+      let lng = res.location.lng
+      mapService.panTo({ lat, lng })
+      addLocationObj(searchValue, lat, lng)
     })
 }
