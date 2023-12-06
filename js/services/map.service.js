@@ -1,4 +1,4 @@
-import {storageService} from './async-storage.service.js'
+// import {storageService} from './async-storage.service.js'
 
 
 export const mapService = {
@@ -41,7 +41,7 @@ function panTo(lat, lng) {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    // const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
+    const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
     var elGoogleApi = document.createElement('script')
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=`
 

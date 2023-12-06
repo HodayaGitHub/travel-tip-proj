@@ -57,5 +57,29 @@ function onPanTo() {
 // TODO Nir: Render the location on the map - connect between the const locs to the render function
 // TODO Nir: Create a “my-place” button that pan the map to the user’s place.
 
+
+
 // TODO Hodaya: Add an Actions column with buttons: Go and Delete 
 
+function onNavigateTo(){
+
+}
+
+function onRemoveLocation(){
+
+}
+
+function add(name, lat, lng ) {
+    addLocation({
+        name,
+        lat,
+        lng,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+    })
+}
+
+
+// function onRemove() {
+//     removeLocation.then().catch()
+// }

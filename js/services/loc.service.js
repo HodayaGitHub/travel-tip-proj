@@ -1,11 +1,13 @@
+import {storageService} from './async-storage.service.js'
+
 export const locService = {
     getLocs
 }
 
+const LOCATION_TYPE = 'locations'
 
 const locs = [
     {
-        id: 1,
         name: 'Greatplace',
         lat: 32.047104,
         lng: 34.832384,
@@ -23,12 +25,24 @@ const locs = [
 ]
 
 function getLocs() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(locs)
-            // TODO Hodaya: save to storage
-        }, 2000)
-    })
+    let locationsPromise = storageService.query(LOCATION_TYPE, 0).then(locations =>
+        {
+            console.log(locations)
+            return locations
+        })
+
+    return locationsPromise 
+}
+
+// call the getLocs on renderLocs 
+
+function removeLocation(locIdx) {
+    // it returns a promise that it will be deleted
+    return storageService.remove(LOCATION_TYPE,locIdx)
+}
+
+function addLocation(locationObj) {
+    return storageService.post(LOCATION_TYPE, locationObj)
 }
 
 

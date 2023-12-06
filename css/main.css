@@ -1,0 +1,26 @@
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-columns:
+    minmax(20px, 1fr)
+    minmax(auto, 1060)
+    minmax(20px, 1fr);
+  }
+
+  
+  .main-layout > *:not(.full) {
+    grid-column: 2;
+  }
+  
+  .main-layout > *.full {
+    grid-column: 1 / -1;
+  }
+
+
+
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+}
