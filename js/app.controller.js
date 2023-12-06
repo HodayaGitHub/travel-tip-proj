@@ -86,63 +86,58 @@ function onMyLocation() {
     .catch((err) => console.log('Error panning to user position', err))
 }
 
-// TODO Hodaya: Add an Actions column with buttons: Go and Delete 
+// TODO Hodaya: Add an Actions column with buttons: Go and Delete
 
-function onNavigateTo() {
+function onNavigateTo() {}
 
-}
-
-function onRemoveLocation() {
-
-}
+function onRemoveLocation() {}
 
 function addLocationObj(name, lat, lng) {
-  locService.addLocationToStorage({
-    name,
-    lat,
-    lng,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  })
+  locService
+    .addLocationToStorage({
+      name,
+      lat,
+      lng,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    })
+    .then(() => renderLocationTable())
 }
-
 
 // function onRemove() {
 //     removeLocation.then().catch()
 // }
 
-
-
 function onSearch(ev) {
   if (ev) ev.preventDefault()
   const searchValue = document.querySelector('input[name=search]').value
 
-  mapService.connectGeocodingApi(searchValue)
-    .then(res => {
-      let lat = res.location.lat
-      let lng = res.location.lng
-      mapService.panTo({ lat, lng })
-      addLocationObj(searchValue, lat, lng)
-      renderLocationTable()
-
-    })
+  mapService.connectGeocodingApi(searchValue).then((res) => {
+    let lat = res.location.lat
+    let lng = res.location.lng
+    mapService.panTo({ lat, lng })
+    addLocationObj(searchValue, lat, lng)
+  })
 }
 
-
-
 function renderLocationTable() {
-  locService.getLocationsFromStorage()
-    .then(locations => {
-      const strHtml = locations.map(location => {
-        return `<div class="location-item">
-        <p>${location.name}</p>
-        <button onclick="onPanTo(${location.lat}, ${location.lng})">Go</button>
-        <button onclick="removeLocation()">X</button>
+  locService
+    .getLocationsFromStorage()
+    .then((locations) => {
+      if (!locations.length) {
+        console.log('No locations found')
+        return
+      }
+      const strHtml = locations.map((location) => {
+        return `
+            <div class="location-item">
+              <p>${location.name}</p>
+              <button onclick="onPanTo(${location.lat}, ${location.lng})">Go</button>
+              <button onclick="onRemoveLocation('${location.id}')">X</button>
             </div>`
       })
       const elLocationContainer = document.querySelector('.locations-container')
       elLocationContainer.innerHTML = strHtml.join('')
     })
-
+    .catch((err) => console.error('Error rendering location table:', err))
 }
-
