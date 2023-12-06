@@ -57,9 +57,7 @@ function onPanTo() {
 
 // TODO Nir: Render the location on the map - connect between the const locs to the render function
 
-renderFirstPosition()
-
-function renderFirstPosition() {
+function renderPosition() {
   console.log('rendering first position')
   locService
     .getLocs()
@@ -75,7 +73,13 @@ function renderFirstPosition() {
 function onMyLocation() {
   getPosition()
     .then((pos) => {
+      // const mapCoords = pos.coords.
+
       mapService.panTo(pos.coords.latitude, pos.coords.longitude)
+      mapService.addMarker({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      })
     })
     .catch((err) => console.log('Error panning to user position', err))
 }

@@ -18,6 +18,19 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       zoom: 15,
     })
     console.log('Map!', gMap)
+
+    // Add click event listener to the map
+    gMap.addListener('click', function (ev) {
+      // Get the clicked location
+      const clickedLocation = ev.latLng.toJSON()
+      console.log('ev.latLng.toJSON():', ev.latLng.toJSON())
+
+      // Optional: Add a marker at the clicked location
+      addMarker(clickedLocation)
+
+      // Additional functionality for handling the clicked location
+      // e.g., saving the location to your locations service, displaying details, etc.
+    })
   })
 }
 
