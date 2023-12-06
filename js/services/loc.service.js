@@ -8,7 +8,6 @@ const LOCATION_TYPE = 'locations'
 
 const locs = [
   {
-    id: 1,
     name: 'Greatplace',
     // lat: 32.047104,
     // lng: 34.832384,
@@ -28,7 +27,8 @@ const locs = [
 ]
 
 function getLocs() {
-    let locationsPromise = storageService.query(LOCATION_TYPE, 0).then(locations =>
+    let locationsPromise = storageService.query(LOCATION_TYPE, 0)
+    .then(locations =>
         {
             console.log(locations)
             return locations
@@ -39,9 +39,9 @@ function getLocs() {
 
 // call the getLocs on renderLocs 
 
-function removeLocation(locIdx) {
+function removeLocation(locId) {
     // it returns a promise that it will be deleted
-    return storageService.remove(LOCATION_TYPE,locIdx)
+    return storageService.remove(LOCATION_TYPE,locId)
 }
 
 function addLocation(locationObj) {

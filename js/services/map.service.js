@@ -1,6 +1,5 @@
 // import {storageService} from './async-storage.service.js'
 
-
 export const mapService = {
   initMap,
   addMarker,
@@ -9,6 +8,8 @@ export const mapService = {
 
 // Var that is used throughout this Module (not global)
 let gMap
+const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
+
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
   console.log('InitMap')
@@ -18,19 +19,12 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
       center: { lat, lng },
       zoom: 15,
     })
-    console.log('Map!', gMap)
-
-    // Add click event listener to the map
+    // console.log('Map!', gMap)
     gMap.addListener('click', function (ev) {
-      // Get the clicked location
       const clickedLocation = ev.latLng.toJSON()
-      console.log('ev.latLng.toJSON():', ev.latLng.toJSON())
-
-      // Optional: Add a marker at the clicked location
+      // console.log('ev.latLng.toJSON():', ev.latLng.toJSON())
       addMarker(clickedLocation)
 
-      // Additional functionality for handling the clicked location
-      // e.g., saving the location to your locations service, displaying details, etc.
     })
   })
 }
@@ -45,15 +39,14 @@ function addMarker(loc) {
 }
 
 function panTo(lat, lng) {
-  var laLatLng = new google.maps.LatLng(lat, lng)
+  let laLatLng = new google.maps.LatLng(lat, lng)
   gMap.panTo(laLatLng)
 }
 
 function _connectGoogleApi() {
   if (window.google) return Promise.resolve()
-  const API_KEY = 'AIzaSyBWcNTwn-dWPn_JZhBhSlcj8z8I61GbkVE'
-  var elGoogleApi = document.createElement('script')
-//   elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=`
+  let elGoogleApi = document.createElement('script')
+  //   elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=`
 
   elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
   elGoogleApi.async = true
@@ -63,4 +56,21 @@ function _connectGoogleApi() {
     elGoogleApi.onload = resolve
     elGoogleApi.onerror = () => reject('Google script failed to load')
   })
+}
+
+
+
+function _connectGeocodingApi(location_name) {
+  if (window.google) return Promise.resolve()
+
+  const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=${API_KEY}`;
+
+  return axios.get(geocodingApiUrl)
+      .then(response => {
+          return response.data
+      })
+      .catch(error => {
+          console.error('Error connecting to the Geocoding API:', error)
+          throw error
+      })
 }

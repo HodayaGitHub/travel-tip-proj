@@ -7,6 +7,7 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onMyLocation = onMyLocation
+window.onSearch = onSearch
 
 function onInit() {
   mapService
@@ -108,3 +109,12 @@ function add(name, lat, lng ) {
 // function onRemove() {
 //     removeLocation.then().catch()
 // }
+
+
+
+function onSearch(ev){
+  if (ev) ev.preventDefault()
+  const elInputSearch = document.querySelector('input[name=search]')
+
+  // call the api with then 
+}
