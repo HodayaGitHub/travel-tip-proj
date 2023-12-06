@@ -42,6 +42,7 @@ function addMarker(loc) {
 function panTo(lat, lng) {
   let laLatLng = new google.maps.LatLng(lat, lng)
   gMap.panTo(laLatLng)
+  addMarker(laLatLng)
 }
 
 function _connectGoogleApi() {
@@ -61,17 +62,21 @@ function _connectGoogleApi() {
 
 
 function connectGeocodingApi(location_name) {
-  if (window.google) return Promise.resolve()
+  // if (window.google) return Promise.resolve()
 
   const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=${API_KEY}`
   // const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${location_name}&key=`
 
   return axios.get(geocodingApiUrl)
       .then(response => {
-          return response.data
+        console.log('res data', response.data)
+        // console.log('resGeo', response.data.results[0].geometry.location)
+        let locationCoords = response.data.results[0].geometry.location
+          return locationCoords
       })
       .catch(error => {
           console.error('Error connecting to the Geocoding API:', error)
           throw error
       })
 }
+
