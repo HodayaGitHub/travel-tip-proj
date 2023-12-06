@@ -51,9 +51,10 @@ function onGetUserPos() {
     })
 }
 
-function onPanTo() {
-  console.log('Panning the Map')
-  mapService.panTo(35.6895, 139.6917)
+function onPanTo(lat, lng) {
+  mapService.panTo(lat, lng)
+  // console.log('Panning the Map')
+  // mapService.panTo(35.6895, 139.6917)
 }
 
 // TODO Nir: Render the location on the map - connect between the const locs to the render function
@@ -122,5 +123,26 @@ function onSearch(ev) {
       let lng = res.location.lng
       mapService.panTo({ lat, lng })
       addLocationObj(searchValue, lat, lng)
+      renderLocationTable()
+
     })
 }
+
+
+
+function renderLocationTable() {
+  locService.getLocationsFromStorage()
+    .then(locations => {
+      const strHtml = locations.map(location => {
+        return `<div class="location-item">
+        <p>${location.name}</p>
+        <button onclick="onPanTo(${location.lat}, ${location.lng})">Go</button>
+        <button onclick="removeLocation()">X</button>
+            </div>`
+      })
+      const elLocationContainer = document.querySelector('.locations-container')
+      elLocationContainer.innerHTML = strHtml.join('')
+    })
+
+}
+
